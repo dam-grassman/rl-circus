@@ -43,7 +43,7 @@ extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages', 
     'recommonmark', 
-    'sphinx_rtd_theme', 'nbsphinx']
+    'sphinx_rtd_theme']
 exclude_patterns = ['_build', '**.ipynb_checkpoints']
 
 
