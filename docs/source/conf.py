@@ -43,9 +43,17 @@ extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages', 
     'recommonmark', 
-    'sphinx_rtd_theme']
+    'sphinx_rtd_theme', 
+    'nbsphinx']
 exclude_patterns = ['_build', '**.ipynb_checkpoints']
-
+from sphinx.builders.html import StandaloneHTMLBuilder
+StandaloneHTMLBuilder.supported_image_types = [
+    'image/svg+xml',
+    'image/gif',
+    'image/png',
+    'image/jpeg'
+]
+supported_image_types = ['image/gif', 'image/svg+xml', 'png', 'image/jpeg']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

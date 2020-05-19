@@ -1,0 +1,421 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Deep Q Network &mdash; XRL  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="DQN" href="../algo/dqn.html" />
+    <link rel="prev" title="Introduction to RL" href="introduction.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> XRL
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Bibliographie:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../biblio/visu_understanding_atari.html">Visualizing and Understanding Atari Agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../biblio/notebook/Overview_Visualizing_Atari_Agents.html">Overview - Visualizing and Understanding Atari Agents</a></li>
+</ul>
+<p class="caption"><span class="caption-text">General Knowledge:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to RL</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Deep Q Network</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dqn-s-improvements">DQN’s improvements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#double-dqn-ddqn">Double DQN - DDQN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#prioritized-experience-replay-prioritized-ddqn">Prioritized Experience Replay - Prioritized DDQN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dueling-networks-dueling-ddqn">Dueling Networks - Dueling DDQN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multi-step-learning-n-step">Multi-step learning (N-step)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#distributional-rl-distributional-dqn">Distributional RL - Distributional DQN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#noisy-nets-noisy-dqn">Noisy Nets - Noisy DQN</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Algorithms:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../algo/dqn.html">DQN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../algo/ppo.html">PPO</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Annexes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../lexicon.html">Lexicon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../help.html">Help</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">XRL</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Deep Q Network</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/rl/dqn_intro.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="deep-q-network">
+<h1>Deep Q Network<a class="headerlink" href="#deep-q-network" title="Permalink to this headline">¶</a></h1>
+<p>If the state or action spaces become continuous, we need to represent a function over a continuous domain as we can’t enumerate all values ! In order to use parametrized representation, we can either use linear representation to represents continuous function, using <em>features</em> and a <em>vector of parameters</em> or use FFNN.</p>
+<p>{2}</p>
+<p>Motivations for Deep RL : approximation with deep networks can be very accurate, and rely on efficient backprop. <strong>Idea</strong> : use a deep neural network architecture to learn the optimal Q-function in a Q-learning algo.</p>
+<p>The <strong>Q-network</strong> in DQN (with finit space of actions) is a parametrized representation of the critic <span class="math notranslate nohighlight">\(Q(s_t, a_t | \theta)\)</span>, equivalent to the Q-table. One find the action by taking the max (as in Q-learning).</p>
+<p>Limitation : it requires one output neuron per action though.</p>
+<img alt="../_images/dqn.png" src="../_images/dqn.png" />
+<p>The <strong>learning of the Q-function</strong> is inspired by supervized learning (ie minimize a loss-function)</p>
+<p>ex : <span class="math notranslate nohighlight">\(L(s,a) = (y^{*}(s,a) - Q(s_t, a_t | \theta))^2\)</span> with backpropagation on weight <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<p>In the Q-network, one should minimize the <strong>Reward Prediction Error (RPE)</strong> = Temporal Difference error (TDE), for each sample i, the error <span class="math notranslate nohighlight">\(\delta_i\)</span> should converge to 0 :</p>
+<p><span class="math notranslate nohighlight">\(\delta_i = r_i + \gamma \max_a Q(s_{i+1}, a | \theta) - Q(s_i, a_i| \theta_i)\)</span></p>
+<p>Thus, given a minibatch of N samples <span class="math notranslate nohighlight">\(\{(s_i, a_i, r_i, s_{i+1})\}\)</span>, one computes :</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(y_i = r_i + \gamma \max_a Q(s_{i+1}, a | \theta')\)</span></p></li>
+<li><p>then update <span class="math notranslate nohighlight">\(\theta\)</span> by minimizing the loss function <span class="math notranslate nohighlight">\(L = \frac{1}{N} \sum_i (y_i - Q(s_i, a_i|\theta))^2\)</span></p></li>
+</ul>
+<p>First observation, this is not stable (for the same input, the label/target changes constantly overtime) and approximating Q-value is not exactly a supervised pb (where the desired output is constant w.r.t one input) as the target <span class="math notranslate nohighlight">\(y_i = r_i + \gamma \max_a Q(s_{i+1}, a | \theta)\)</span> is itself a function of Q.</p>
+<p>Second issue, in most ML algo, samples are assumed to be iid, but it is obviously not the case of behavioral samples <span class="math notranslate nohighlight">\((s_i, a_i, r_i, s_{i+1})\)</span>. The idea is then to break correlation between samples by putting them into a buffer and extract them randomly. If not, the model may over-fit for some groups/classes of samples at different time and the solution won’t be generalized. Question to ask yourself is how to choose the size of the RB and hot to put samples in it.</p>
+<ul class="simple">
+<li><p>target <span class="math notranslate nohighlight">\(= R(s,a,s') + \gamma \max_{a'} Q_k(s' a' | \theta_k)\)</span>, non-stationary target.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\theta_{k+1} = \theta_k - \alpha \nabla_\theta \mathbb{E}_{s'\sim p(s'| s, a)} \left[ (Q_\theta(s,a) - \mbox{target}(s'))^2\right]_{\theta = \theta_k}\)</span>, update step correlated within trajectories.</p></li>
+</ul>
+<p>To bypass this, two tricks :</p>
+<ul class="simple">
+<li><p><strong>Trick 1 : Stable Target Q-learning / Target Network</strong> : key idea is to do “period of supervised learning” by introducing a second network, the <strong>target network :math:`Q’(..| theta’)`</strong>. One fixes the Q-values temporarily (fixing parameters <span class="math notranslate nohighlight">\(\theta'\)</span>), so that changes in <span class="math notranslate nohighlight">\(\theta\)</span> don’t impact <span class="math notranslate nohighlight">\(\theta'\)</span>, target are not moving, and thus have limited unwanted effect on training.</p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\(L_i (\theta_i) = \mathbb{E}_{s,a, s', r} \sim D \left( r+\gamma \max_{a'} Q'(s', a', \textcolor{red}{\theta^{*}}) - Q(s, a, \theta_i) \right)^2 \mbox{, with fixed } \theta^{*} \mbox{ for N steps}\)</span></p>
+<p>To do so :</p>
+<ul class="simple">
+<li><p>initialize Q’ with same values as in Q.</p></li>
+<li><p>learn on Q with fixed <span class="math notranslate nohighlight">\(y_i = r_i + \gamma \max_a Q'(s_{i+1}, a | \theta')\)</span></p></li>
+<li><p>from time to time, update Q’ with Q (:math:<a href="#id1"><span class="problematic" id="id2">`</span></a>theta’ is updated to theta only each K iterations)</p></li>
+</ul>
+<p>This makes the process much more stable.
+-  <strong>Trick 2 : Replay Buffer Shuffling / Experience Replay</strong> :</p>
+<p>The <strong>Replay Memory</strong> stores the transitions that the agent observes, allowing us to reuse this data later. By sampling from it randomly, the transitions that build up a batch are decorrelated (or at least, it forms a dataset <em>stable enough</em> for training) It has been shown that this greatly stabilizes and improves the DQN training procedure.</p>
+<p>Ex : put last 10000 video frames (=transitions) into a <strong>buffer</strong> and sample mini-batch of 32 samples from this buffer to train a deep network.</p>
+<p>Remark : Experience Replay has the largest performance improvement in DQN, where Target Network’s impact is significant but not as crucial as replay.</p>
+<p><strong>DQN Algorithm with Experience Replay</strong>  :</p>
+<ul class="simple">
+<li><p>[0] Initialize the <strong>replay memory</strong> D to capacity N</p></li>
+</ul>
+<p>Initialize <strong>action-value function</strong> Q with random weigth <span class="math notranslate nohighlight">\(\theta\)</span>
+Initialize <strong>target action-value function</strong> <span class="math notranslate nohighlight">\(Q^*\)</span> with weigth <span class="math notranslate nohighlight">\(\theta^* = \theta\)</span></p>
+<ul class="simple">
+<li><p>For episode 1 .. M do :</p></li>
+<li><p>Initialize sequence <span class="math notranslate nohighlight">\(s_1 = \{x_1\}\)</span> and preprocess sequence <span class="math notranslate nohighlight">\(\phi_1 = \phi(s_1)\)</span></p></li>
+<li><p>For t = 1 .. T do :</p></li>
+<li><p>with proba <span class="math notranslate nohighlight">\(\epsilon\)</span> select random action <span class="math notranslate nohighlight">\(a_t\)</span></p></li>
+</ul>
+<p>with proba <span class="math notranslate nohighlight">\(1 - \epsilon\)</span> select action <span class="math notranslate nohighlight">\(a_t = \argmax_a Q(\phi(s_t), a | \theta)\)</span>
+-  execute action <span class="math notranslate nohighlight">\(a_t\)</span> in emulator : observe reward <span class="math notranslate nohighlight">\(r_t\)</span> and image <span class="math notranslate nohighlight">\(x_{t+1}\)</span>
+-  set <span class="math notranslate nohighlight">\(s_{t+1} = (s_t, a_t, x_{t+1})\)</span> and preprocess <span class="math notranslate nohighlight">\(\phi_{t+1} = \phi(x_{t+1})\)</span>
+-  store transition (<span class="math notranslate nohighlight">\(\phi_t, a_t, r_t, \phi_{t+1}\)</span>) in D
+-  sample random minibatch of transition ((<span class="math notranslate nohighlight">\(\phi_j, a_j, r_j, \phi_{j+1}\)</span>) from D
+-  set <span class="math notranslate nohighlight">\(y_i = \left\{\n  \x08{ll}\n  r_{j} &amp; \mbox{if episode terminates at step j+1} \\n  r_j + \gamma \max_{a'} Q^* (\phi_{j+1}, a', \theta^*) &amp; \mbox{otherwise.}\n  \n\right.\)</span>
+-  perform Gradient Descent step on <span class="math notranslate nohighlight">\((y_i - Q (\phi_{j}, a_j, \theta))^2\)</span> w.r.t <span class="math notranslate nohighlight">\(\theta\)</span> (network parameter)
+-  Every C step, reset <span class="math notranslate nohighlight">\(\theta^* = \theta\)</span></p>
+<p>Remark : typically, <span class="math notranslate nohighlight">\(\phi\)</span> preprocess the last 4 frames/images, so as to represent <em>the state</em> that captures motion.</p>
+<p><strong>Implementation details</strong>:</p>
+<ul class="simple">
+<li><p><em>loss function</em>: Huber loss, which is quadratic for small values, and linear for large ones (resulting is less dramatic changes)</p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\(L\delta(x) = \left\{\n  \x08{ll}\n  \frac{1}{2}x^2 &amp; \mbox{ for } |x|leq \delta \\n  \delta (|x| - \frac{1}{2}\delta) &amp; \mbox{otherwise.}\n  \n\right.\)</span></p>
+<ul class="simple">
+<li><p><em>optimizer</em> : RMSprop</p></li>
+<li><p><a href="#id3"><span class="problematic" id="id4">*</span></a><span class="math notranslate nohighlight">\(\epsilon\)</span>-greedy policy} : starts with <span class="math notranslate nohighlight">\(\epsilon = 1\)</span> then decreases to 0.1 or 0.05 with :</p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\(\pi(a|s) = \left\{  \begin{eqnarray} \frac{\epsilon}{m} + (1-\epsilon)  \mbox{ if } a^{*} = \mbox{argmax}_a Q(s,a) \\ \frac{\epsilon}{m}  \mbox{ ow, m being the nb of possible actions}\end{eqnarray}\right.\)</span></p>
+<ul class="simple">
+<li><p><em>Architecture</em></p></li>
+</ul>
+<p>[h!]</p>
+<img alt="../_images/dqn_network.png" src="../_images/dqn_network.png" />
+<p>Remark : even during testing, one might want to keep <span class="math notranslate nohighlight">\(\epsilon\)</span> to a small value as a <em>deterministic</em> policy may stick in local optimum whereas a <em>non-deterministic</em> policy allows to break out for a chance to reach to reach a better optimum.</p>
+<div class="section" id="dqn-s-improvements">
+<h2>DQN’s improvements<a class="headerlink" href="#dqn-s-improvements" title="Permalink to this headline">¶</a></h2>
+<p>DQN extensions in one question :</p>
+<ul class="simple">
+<li><p><strong>Double DQN</strong> : How to deal with DQN overestimation of the values of actions</p></li>
+<li><p><strong>Prioritized replay buffer</strong> : Why uniform sampling of our experience is not the best way to train</p></li>
+<li><p><strong>Dueling DQN</strong> : How to improve convergence speed by making our network’s architecture closer represent the problem we’re solving</p></li>
+<li><p><strong>N-steps DQN</strong> : How to improve convergence speed and stability with a simple unrolling of the Bellman equation and why it’s not an ultimate solution</p></li>
+<li><p><strong>Categorical DQN</strong> : How to go beyond the single expected value of action</p></li>
+</ul>
+<p>and work with full distributions
+-  <strong>Noisy networks</strong> : How to make exploration more efficient by adding noise to the network weights</p>
+</div>
+<div class="section" id="double-dqn-ddqn">
+<h2>Double DQN - DDQN<a class="headerlink" href="#double-dqn-ddqn" title="Permalink to this headline">¶</a></h2>
+<p><strong>Paper</strong> : href{<a class="reference external" href="https://www.aaai.org/ocs/index.php/AAAI/AAAI16/paper/viewPaper/12389">https://www.aaai.org/ocs/index.php/AAAI/AAAI16/paper/viewPaper/12389</a>}{Deep Reinforcement Learning with Double Q-Learning
+}, van Hasselt, Guez, and Silver (2015)</p>
+<p><strong>Issue :</strong> in Q-learning, we use <span class="math notranslate nohighlight">\(y_i = r_{i} + \gamma Q(s_{i+1},\argmax_a Q(s_{i+1}, a, \theta), \theta)\)</span> as the target value for Q. Thus, the <em>max operator</em> in Q-learning results in the propagation of over-estimations (it creates a positive bias towards the Q-estimation). This max-operator is used for action choice and value propagation. <strong>Double DQN</strong> aims at separating both calculations with two different tables :</p>
+<ul class="simple">
+<li><p>one Q-table for value propagation, the <em>target network :math:`Q^*`</em> to estimate the Q-value</p></li>
+<li><p>one Q-table for choosing the max, the <em>online network Q</em> to greedy select the action.</p></li>
+</ul>
+<p>It makes profit of the <em>target network</em> (propagation) and select the max on the <em>standard Q-network</em>. The CV is twice faster in practice. The loss becomes :</p>
+<p><span class="math notranslate nohighlight">\(L_i(\theta_i) = \mathbb{E}_{s,a,s',r \sim D} \left( r + \gamma Q(s',\argmax_{a'} Q(s', a', \theta), \theta_i^*) - Q(s, a, \theta_i)\right)^2\)</span></p>
+<p>where the target have changed from <span class="math notranslate nohighlight">\(r + \gamma \max_{a'} Q(s', a', \theta_i^*)\)</span> to <span class="math notranslate nohighlight">\(r + \gamma Q(s',\argmax_{a'} Q(s', a', \theta), \theta_i^*)\)</span></p>
+<p>In the paper, the authors
+demonstrated that the basic DQN has a tendency to overestimate values for Q,
+which may be harmful to training performance and sometimes can lead to
+suboptimal policies. The root cause of this is the max operation in the Bellman equation. Q(t+1, a) was Q-values calculated using our target network, so we update with
+the trained network every n steps. The authors of the paper proposed choosing
+actions for the next state using the trained network but taking values of Q from the target net. The authors proved that this simple tweak fixes overestimation completely and
+they called this new architecture double DQN.</p>
+</div>
+<div class="section" id="prioritized-experience-replay-prioritized-ddqn">
+<h2>Prioritized Experience Replay - Prioritized DDQN<a class="headerlink" href="#prioritized-experience-replay-prioritized-ddqn" title="Permalink to this headline">¶</a></h2>
+<p><strong>Paper</strong>: href{<a class="reference external" href="https://arxiv.org/abs/1511.05952">https://arxiv.org/abs/1511.05952</a>}{<em>Prioritized Experience Replay</em>}, Schaul and al, (2015).</p>
+<p><strong>Idea</strong> : improve the efficiency of samples in the replay buffer by prioritizing those samples according to the training loss.</p>
+<p>In DQN, one choose samples/transitions from the replay buffer <em>randomly/uniformly</em> (supposed to break correlation between immediate transitions, the i.i.d assumption being a required condition of SGD method). The idea in <strong>Prioritized Experience Replay</strong> is the following : samples with a <em>greater TD error improve the critic faster</em> and hence, should be given a higher probability of being selected (pay less attention to samples already close to the target). Transitions are ranked according to the TD error value and selected proportionally to those priorities/rank. CV is usually twice faster.</p>
+<p><strong>Remarks</strong> : sampling with priorities introduces a <strong>bias</strong> in the data distribution - and needs to be “compensated” for the SGD to work. Authors used <em>sampled weights</em>, multiplied to the individual sample loss (<span class="math notranslate nohighlight">\(w_i = (N\cdot P(i))^{-\beta}\)</span>, if <span class="math notranslate nohighlight">\(\beta = 1\)</span>, sampling is fully compensated, <span class="math notranslate nohighlight">\(\beta = 0\)</span> no compensation at all).</p>
+</div>
+<div class="section" id="dueling-networks-dueling-ddqn">
+<h2>Dueling Networks - Dueling DDQN<a class="headerlink" href="#dueling-networks-dueling-ddqn" title="Permalink to this headline">¶</a></h2>
+<p><strong>Paper</strong> : href{<a class="reference external" href="http://proceedings.mlr.press/v48/wangf16.pdf">http://proceedings.mlr.press/v48/wangf16.pdf</a>}{A Dueling
+Network Architectures for Deep Reinforcement Learning}, Wang et al., (2015).</p>
+<p><strong>Idea</strong> : Q-values our
+network is trying to approximate can be divided into two quantities: the value of the
+state V(s) and the advantage of actions in this state A(s, a) and dueling networks aims at replacing the last fully connected layer by two separate branches to compute Q(s, a) = V(s) + A(s, a) with the idea that it better captures some relevant aspect of the control task.</p>
+<ul class="simple">
+<li><p>the <strong>advantage function</strong> <span class="math notranslate nohighlight">\(A(s_i, a_i | \theta) = Q(s_i, a_i | \theta) - \max_a Q(s_i, a | \theta)\)</span> corresponds to the regret for not performing the best action (<span class="math notranslate nohighlight">\(&lt;0\)</span> unless it is the best action)</p></li>
+<li><p>the value function <span class="math notranslate nohighlight">\(V(s_i) = \max_a Q(s_i, a | \theta)\)</span>, which is simply the discounted expected reward achievable from a state.</p></li>
+</ul>
+<p>The idea behind the <strong>Dueling Networks</strong> is to use <span class="math notranslate nohighlight">\(Q(s_i, a_i | \theta) = A(s_i, a_i | \theta^A) + V(s_i, \theta^V)\)</span>, and compute Q as the sum of the value function V and a <em>state-dependant action advantage</em> function A. It uses to separate heads to compute V and A as in the following figure.
+[h!]</p>
+<img alt="../_images/dueling.jpg" src="../_images/dueling.jpg" />
+<p><strong>Remarks</strong> : to ensure the network will learn <span class="math notranslate nohighlight">\(V(s)\)</span>  and <span class="math notranslate nohighlight">\(A(s, a)\)</span> as we want to, authors set the mean value of the
+advantage of any state to be zero by subtracting <span class="math notranslate nohighlight">\(\frac{1}{|mathcal{A}|}\sum_{a=1}^{|mathcal{A}|} A(s,a)\)</span> to the  calculation of Q</p>
+<p><span class="math notranslate nohighlight">\(Q(s, a) \approx V(s) + A(s, a) - \frac{1}{|mathcal{A}|} \sum_{a=1}^{|mathcal{A}|} A(s,a)\)</span></p>
+</div>
+<div class="section" id="multi-step-learning-n-step">
+<h2>Multi-step learning (N-step)<a class="headerlink" href="#multi-step-learning-n-step" title="Permalink to this headline">¶</a></h2>
+<p><strong>Paper</strong> : href{<a class="reference external" href="https://link.springer.com/article/10.1007/BF00115009">https://link.springer.com/article/10.1007/BF00115009</a>}{Learning to Predict by the Methods of Temporal
+Differences}, Sutton, R.S. 1988.</p>
+<p><strong>Idea</strong> : when acting optimally, if we want to update Q(s,a) and Q(s+1,a) when s+2 is terminal, we’d use the old version of Q(s+1,a) inside the Q(s,a) update whereas Q(s+1,a) can be update precisely and immediately. Looking a step (or n-step further) under optimality assumption would faster the training. (<strong>in practice, optimality not true and caution is needed)</strong></p>
+<p>When unrolling the Bellman update <span class="math notranslate nohighlight">\(Q(s_t,a_t) = r_{t} + \gamma \max_a Q(s_{t+1}, a) = r_{t} + \gamma \max_a (r_{a, t+1} + \max_{a'} Q(s_{t+2}, a'))\)</span> and assuming we act optimally (i.e our action <span class="math notranslate nohighlight">\(a\)</span> at the step t+1 was chosen optimally) we have now
+<span class="math notranslate nohighlight">\(Q(s_t,a_t) = r_{t} + \gamma r_{a, t+1} + \gamma \max_{a'} Q(s_{t+2}, a'))\)</span></p>
+<p>Unrolled for N steps gives, by rewriting <span class="math notranslate nohighlight">\(R^{(N)}_t = \sum_{n=0}^{N-1} \gamma^{n} r_{t+n}\)</span> :
+<span class="math notranslate nohighlight">\(Q(s_t,a_t) =R^{(N)}_t + \gamma ^{N} \max_{a'} Q(s_{t+n}, a'))\)</span></p>
+<p>This leads to multi-step variant of DQN which is defined by minimizing the alternative loss :</p>
+<p><span class="math notranslate nohighlight">\(R^{(N)}_t + \gamma ^{N} \max_{a} Q(s_{t+n}, a, \theta^{*})) - Q(s_t,a_t, \theta)\)</span></p>
+<p>Remarks : strictly speaking, omitting the max operator is not valid as we don’t necessary act optimally using an <span class="math notranslate nohighlight">\(\epsilon\)</span>-greedy policy, ie acting sometimes randomly. Tuning the N parameter is crucial to avoid unwanted effects (wrong updates that might overall break the training process)</p>
+</div>
+<div class="section" id="distributional-rl-distributional-dqn">
+<h2>Distributional RL - Distributional DQN<a class="headerlink" href="#distributional-rl-distributional-dqn" title="Permalink to this headline">¶</a></h2>
+<p><strong>Paper</strong> : href{<a class="reference external" href="https://arxiv.org/abs/1707.06887">https://arxiv.org/abs/1707.06887</a>}{A Distributional Perspective on Reinforcement Learning}, M.G. Bellemare, W. Dabney, R. Munos(2017)</p>
+<p><strong>Idea</strong> : replace Q-values with more generic Q-value probability distribution.</p>
+<p>In stochastic/ non-deterministic environment, the Q-value that tries to approximate the DQN net is basically the expectation over all trajectories when following policy <span class="math notranslate nohighlight">\(\pi\)</span>. <span class="math notranslate nohighlight">\(Q^{\pi}(s,a) = \mathbb{E}_{\pi} (Z^{\pi}(s,a))\)</span> where Z is introduced by <span class="math notranslate nohighlight">\(Z^{\pi}(s,a) = \sum_{t\geq 0}\gamma^t r(s_t, a_t)_{|s_0 = s, a_0 = a, \pi}\)</span></p>
+<p>The paper from M.G Bellemare <em>et al</em> introduces a new framework where Belleman equation are rewritten with random variables to fit the distributional point of view [See section on Distributional Reinforcement Learning]</p>
+</div>
+<div class="section" id="noisy-nets-noisy-dqn">
+<h2>Noisy Nets - Noisy DQN<a class="headerlink" href="#noisy-nets-noisy-dqn" title="Permalink to this headline">¶</a></h2>
+<p><strong>Paper</strong> : href{<a class="reference external" href="https://arxiv.org/abs/1706.10295">https://arxiv.org/abs/1706.10295</a>}{Noisy Networks for
+Exploration}, Fortunato et al (2017)</p>
+<p>DQN uses <span class="math notranslate nohighlight">\(\epsilon\)</span>-greedy policy to select actions. The idea behind <strong>Noisy Nets</strong> is to replace this selection by adding <em>parametric noise</em> to the linear layer to aid exploration. It make use of a greedy policy to select action as we add a trainable parametrized noise to the FC layer of Q-network to explore actions. It addresses the issue of exploring the environment with the idea of
+learning exploration characteristics during training, instead of having a separate schedule related to the exploration.</p>
+<p>The authors propose two ways of adding the noise, both of which work
+according to their experiments :</p>
+<ul class="simple">
+<li><p><strong>Independent Gaussian noise</strong> : For every weight in a fully-connected layer, we have a random value that we draw from the normal distribution. Parameters of the noise <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span> are stored inside the layer and get trained using backpropagation, the same way that we train weights of the standard linear layer. The output of such a ‘noisy layer’ is calculated in the same way as in a linear layer.</p></li>
+<li><p><strong>Factorized Gaussian noise</strong>: To minimize the amount of random values to be sampled, the authors proposed keeping only two random vectors, one with the size of input and another with the size of the output of the layer. Then, a random matrix for the layer is created by calculating the outer product of the vectors.</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../algo/dqn.html" class="btn btn-neutral float-right" title="DQN" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="introduction.html" class="btn btn-neutral float-left" title="Introduction to RL" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Damien
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
