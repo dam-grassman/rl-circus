@@ -1,5 +1,7 @@
+###################
 XRL Documentation !
-===================
+###################
+
 
 
 Needs for explainability and interpretability of machine learning algorithms have risen for the past few years,
@@ -14,13 +16,18 @@ Reinforcement Learning makes no exception, especially as it benefits from black 
 XRL : eXplainability in Reinforcement Learning !
 ================================================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Bibliographie:
-   
-   biblio/visu_understanding_atari
-   biblio/notebook/Overview_Visualizing_Atari_Agents.ipynb
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Saliency Maps:
+
+   Gradient-based Saliency : Jacobian <biblio/notebook/jacobian_saliency_map.ipynb>
+   Gradient-based Saliency : GradCam <biblio/notebook/GradCam_StepbyStep.ipynb>
+   Perturbation-based Saliency <biblio/visu_understanding_atari>
+   Perturbation-based tutorial <biblio/notebook/Overview_Visualizing_Atari_Agents.ipynb> 
+   Object-Based Saliency <biblio/notebook/Object-based_Saliency.ipynb>
+   Survey <exploratory_not_explanatory>
+   
 Culture in RL
 =============
 
